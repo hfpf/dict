@@ -1,4 +1,4 @@
-module github.com/hfpf/dict
+module dict
 
 go 1.15
 
