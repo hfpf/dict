@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "dict/api/helloworld/v1"
+	pb "github.com/hfpf/dict/api/helloworld/v1"
 )
 
 // GreeterService is a greeter service.

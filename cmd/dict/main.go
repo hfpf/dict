@@ -4,8 +4,6 @@ import (
 	"flag"
 	"os"
 
-	pb "dict/api/helloworld/v1"
-	"dict/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	grpcconf "github.com/go-kratos/kratos/v2/api/kratos/config/grpc"
 	httpconf "github.com/go-kratos/kratos/v2/api/kratos/config/http"
@@ -14,7 +12,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/log/stdlog"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	"github.com/go-kratos/kratos/v2/transport/http"
+	pb "github.com/hfpf/dict/api/helloworld/v1"
+	"github.com/hfpf/dict/internal/service"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -36,6 +35,7 @@ func init() {
 }
 
 func main() {
+	//fmt.Print(os.Getwd())
 	flag.Parse()
 	conf := config.New(config.WithSource(
 		file.NewSource(flagconf),
@@ -64,17 +64,17 @@ func main() {
 	if err := conf.Value("grpc.server").Scan(gc); err != nil {
 		panic(err)
 	}
-	httpSrv := http.NewServer(http.Apply(hc))
+	//httpSrv := http.NewServer(http.Apply(hc))
 	grpcSrv := grpc.NewServer(grpc.Apply(gc))
 
 	// register service
 	gs := service.NewGreeterService()
 	pb.RegisterGreeterServer(grpcSrv, gs)
-	pb.RegisterGreeterHTTPServer(httpSrv, gs)
+	//pb.RegisterGreeterHTTPServer(httpSrv, gs)
 
 	// application lifecycle
 	app := kratos.New()
-	app.Append(httpSrv)
+	//app.Append(httpSrv)
 	app.Append(grpcSrv)
 
 	// start and wait for stop signal
